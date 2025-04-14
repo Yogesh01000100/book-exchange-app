@@ -71,23 +71,20 @@ export default function BookList({ role }: BookListProps) {
         placeholder="Search by title or location..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        className="w-full p-2 mb-6 border border-orange-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-400"
+        className="w-1/2 p-2 mb-6 border border-orange-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-400"
       />
 
-      {filteredBooks.length === 0 ? (
-        <p className="text-orange-700 text-center">No books found.</p>
-      ) : (
-        filteredBooks.map((book) => (
-          <div key={book.id}>
-            <BookCard
-              book={book}
-              role={role}
-              onDelete={role === "Owner" ? handleDelete : undefined}
-              onStatusToggle={role === "Owner" ? handleToggleStatus : undefined}
-            />
-          </div>
-        ))
-      )}
+      <div className="grid gap-4 grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2">
+        {filteredBooks.map((book) => (
+          <BookCard
+            key={book.id}
+            book={book}
+            role={role}
+            onDelete={role === "Owner" ? handleDelete : undefined}
+            onStatusToggle={role === "Owner" ? handleToggleStatus : undefined}
+          />
+        ))}
+      </div>
     </div>
   );
 }

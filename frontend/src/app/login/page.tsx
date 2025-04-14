@@ -3,37 +3,50 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { API_BASE } from "@/lib/api";
+import { toast } from "sonner";
+import { useAuth } from "@/context/AuthContext";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [error, setError] = useState<string>("");
+  const { setUser } = useAuth();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
+
     try {
       const res = await fetch(`${API_BASE}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
+
       const data = await res.json();
-      console.log(data);
+
       if (res.ok) {
         localStorage.setItem("user", JSON.stringify(data));
+        setUser(data);
+        toast.success("Login successful!");
 
-        if (data.role === "Owner") {
-          router.push("/dashboard/admin");
-        } else {
-          router.push("/dashboard/user");
-        }
+        setTimeout(() => {
+          if (data.role === "Owner") {
+            router.push("/dashboard/admin");
+          } else {
+            router.push("/dashboard/user");
+          }
+        }, 800);
       } else {
-        setError(data.message || "Login failed");
+        toast.error(data.message || "Login failed");
       }
     } catch (error) {
       console.error(error);
-      setError("Something went wrong");
+      toast.error("Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -83,13 +96,16 @@ export default function LoginPage() {
             />
           </div>
 
-          {error && <p className="text-red-500 text-sm">{error}</p>}
-
           <button
             type="submit"
-            className="bg-orange-500 text-white py-2 rounded hover:bg-orange-600 transition-colors"
+            className={`py-2 rounded text-white transition-colors ${
+              loading
+                ? "bg-orange-300 cursor-not-allowed"
+                : "bg-orange-500 hover:bg-orange-600"
+            }`}
+            disabled={loading}
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
 
           <p className="text-sm text-center mt-2">
