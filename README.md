@@ -53,6 +53,7 @@ GET     /api/books
 POST    /api/books
 PUT     /api/books/:id/status
 DELETE  /api/books/:id
+```
 
-**Base URL**: [https://book-exchange-app-uo59.onrender.com](https://book-exchange-app-uo59.onrender.com)
+Base URL : https://book-exchange-app-uo59.onrender.com
 
