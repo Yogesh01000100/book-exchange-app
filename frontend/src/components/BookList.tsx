@@ -80,6 +80,7 @@ export default function BookList({ role }: BookListProps) {
               role={role}
               onDelete={role === "Owner" ? handleDelete : undefined}
               onStatusToggle={role === "Owner" ? handleToggleStatus : undefined}
+              onImageUploaded={fetchBooks}
             />
           </div>
         ))}

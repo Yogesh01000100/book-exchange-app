@@ -21,6 +21,7 @@ interface BookCardProps {
   role: "Owner" | "Seeker";
   onDelete?: (_id: number) => void;
   onStatusToggle?: (_id: number) => void;
+  onImageUploaded?: () => void;
 }
 
 export default function BookCard({
@@ -28,6 +29,7 @@ export default function BookCard({
   role,
   onDelete,
   onStatusToggle,
+  onImageUploaded,
 }: BookCardProps) {
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -38,7 +40,6 @@ export default function BookCard({
 
     try {
       setIsUploading(true);
-
       const formData = new FormData();
       formData.append("image", file);
 
@@ -48,10 +49,9 @@ export default function BookCard({
       });
 
       const { imageUrl } = await uploadRes.json();
-
       if (!uploadRes.ok) throw new Error("Upload failed");
 
-      const updateRes = await fetch(`${API_BASE}/api/books/${book._id}`, {
+      const updateRes = await fetch(`${API_BASE}/api/books/${book._id}/image`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ imageUrl }),
@@ -60,6 +60,7 @@ export default function BookCard({
       if (!updateRes.ok) throw new Error("Failed to update book with image");
 
       toast.success("Image uploaded successfully");
+      onImageUploaded?.();
     } catch (err) {
       console.error(err);
       toast.error("Failed to upload image");
