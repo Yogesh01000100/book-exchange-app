@@ -50,3 +50,20 @@ export const deleteBook = async (req: Request, res: Response) => {
         res.status(500).json({ message: 'Error deleting book' });
     }
 };
+
+export const updateImage = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const { imageUrl } = req.body;
+
+        const book = await Book.findById(id);
+        if (!book) return res.status(404).json({ message: 'Book not found' });
+
+        book.imageUrl = imageUrl;
+        await book.save();
+
+        res.json(book);
+    } catch (err) {
+        res.status(500).json({ message: 'Failed to update image' });
+    }
+};
