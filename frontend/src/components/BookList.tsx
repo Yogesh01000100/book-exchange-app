@@ -66,23 +66,26 @@ export default function BookList({ role }: BookListProps) {
 
   return (
     <div className="w-full">
-      <input
-        type="text"
-        placeholder="Search by title or location..."
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        className="w-1/2 p-2 mb-6 border border-orange-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-400"
-      />
+      <div className="flex justify-start mb-6">
+        <input
+          type="text"
+          placeholder="Search by title or location..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="w-full max-w-xl p-2 border border-orange-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-400"
+        />
+      </div>
 
-      <div className="grid gap-4 grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2">
+      <div className="flex flex-wrap gap-6 justify-start">
         {filteredBooks.map((book) => (
-          <BookCard
-            key={book.id}
-            book={book}
-            role={role}
-            onDelete={role === "Owner" ? handleDelete : undefined}
-            onStatusToggle={role === "Owner" ? handleToggleStatus : undefined}
-          />
+          <div key={book.id} className="w-full md:w-[48%]">
+            <BookCard
+              book={book}
+              role={role}
+              onDelete={role === "Owner" ? handleDelete : undefined}
+              onStatusToggle={role === "Owner" ? handleToggleStatus : undefined}
+            />
+          </div>
         ))}
       </div>
     </div>

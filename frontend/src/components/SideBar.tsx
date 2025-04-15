@@ -21,7 +21,7 @@ export default function Sidebar({ role }: SidebarProps) {
   };
 
   return (
-    <aside className="w-60 h-screen bg-orange-100 p-6 text-orange-900 flex flex-col shadow-md">
+    <aside className="w-60 min-h-screen bg-orange-100 p-6 text-orange-900 flex flex-col shadow-md">
       <div>
         <nav className="flex flex-col gap-4 text-base font-medium">
           {role === "Owner" ? (

@@ -5,7 +5,6 @@ import BookList from "@/components/BookList";
 
 export default function AdminDashboard() {
 
-  
   return (
     <div className="flex min-h-screen bg-orange-50">
       {/* Sidebar */}
