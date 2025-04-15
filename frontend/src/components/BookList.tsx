@@ -1,18 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import BookCard from "./BookCard";
+import BookCard, { Book } from "./BookCard";
 import { API_BASE } from "@/lib/api";
-
-interface Book {
-  id: number;
-  title: string;
-  author: string;
-  genre?: string;
-  location: string;
-  contact: string;
-  status: string;
-}
 
 interface BookListProps {
   role: "Owner" | "Seeker";
@@ -26,6 +16,7 @@ export default function BookList({ role }: BookListProps) {
     try {
       const res = await fetch(`${API_BASE}/api/books`);
       const data = await res.json();
+      console.log(data);
       setBooks(data);
     } catch (err) {
       console.error("Failed to fetch books", err);
@@ -34,6 +25,7 @@ export default function BookList({ role }: BookListProps) {
 
   const handleDelete = async (id: number) => {
     try {
+      //console.log(id);
       await fetch(`${API_BASE}/api/books/${id}`, {
         method: "DELETE",
       });
@@ -45,6 +37,7 @@ export default function BookList({ role }: BookListProps) {
 
   const handleToggleStatus = async (id: number) => {
     try {
+      //console.log(id);
       await fetch(`${API_BASE}/api/books/${id}/status`, {
         method: "PUT",
       });
@@ -78,7 +71,7 @@ export default function BookList({ role }: BookListProps) {
 
       <div className="flex flex-wrap gap-6 justify-start">
         {filteredBooks.map((book) => (
-          <div key={book.id} className="w-full md:w-[48%]">
+          <div key={book._id} className="w-full md:w-[48%]">
             <BookCard
               book={book}
               role={role}

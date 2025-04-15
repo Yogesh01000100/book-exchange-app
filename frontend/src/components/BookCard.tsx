@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 
-interface Book {
-  id: number;
+export interface Book {
+  _id: number;
   title: string;
   author: string;
   genre?: string;
@@ -16,8 +16,8 @@ interface Book {
 interface BookCardProps {
   book: Book;
   role: "Owner" | "Seeker";
-  onDelete?: (id: number) => void;
-  onStatusToggle?: (id: number) => void;
+  onDelete?: (_id: number) => void;
+  onStatusToggle?: (_id: number) => void;
 }
 
 export default function BookCard({
@@ -50,13 +50,13 @@ export default function BookCard({
           {role === "Owner" && (
             <div className="flex flex-wrap gap-3 pt-2">
               <button
-                onClick={() => onStatusToggle?.(book.id)}
+                onClick={() => onStatusToggle?.(book._id)}
                 className="bg-orange-400 text-white px-4 py-2 text-sm rounded-lg hover:bg-orange-500 transition"
               >
                 Mark as {book.status === "Available" ? "Rented" : "Available"}
               </button>
               <button
-                onClick={() => onDelete?.(book.id)}
+                onClick={() => onDelete?.(book._id)}
                 className="bg-red-200 text-red-700 px-4 py-2 text-sm rounded-lg hover:bg-red-300 transition"
               >
                 Delete
