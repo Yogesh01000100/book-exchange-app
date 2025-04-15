@@ -1,6 +1,6 @@
 # 📚 Peer-to-Peer Book Exchange Portal
 
-A modern full-stack book exchange web application connecting two user types:
+A full-stack book exchange web application connecting two user types:
 
 - **📘 Book Owners** – Can list and manage their books
 - **📗 Book Seekers** – Can browse available books and contact owners
@@ -23,8 +23,8 @@ Built with **Next.js (App Router + TypeScript)** for the frontend and **Express.
 
 ### 👤 Authentication & Roles
 - Role-based login for **Owner** and **Seeker**
-- Login/Register handled via localStorage (mock auth)
-- Redirect to `/dashboard/owner` or `/dashboard/seeker` based on role
+- Login/Register handled via localStorage (auth)
+- Redirect to `/dashboard/admin` or `/dashboard/user` based on role
 
 ### 📖 Book Listings
 - Book Owners can:
@@ -38,9 +38,9 @@ Built with **Next.js (App Router + TypeScript)** for the frontend and **Express.
 ### 💻 UI & UX
 - Modern UI built with Tailwind CSS
 - Image preview and status badge
-- Role-based Sidebar navigation
+- Role-based navigation
 - Toast notifications using `sonner`
-- Loading states and protected route redirects
+- Loading states
 
 ---
 
@@ -52,8 +52,52 @@ POST    /api/auth/login
 GET     /api/books
 POST    /api/books
 PUT     /api/books/:id/status
+PUT     /api/:id/image
 DELETE  /api/books/:id
 ```
 
-Base URL : https://book-exchange-app-uo59.onrender.com
+Base Backend URL (render) : https://book-exchange-app-uo59.onrender.com
 
+
+### 🛠️ How to Run the Project
+#### 📦 Backend (Express + MongoDB)
+### 1. Navigate to backend folder
+```
+cd backend
+```
+
+### 2. Install dependencies
+```
+npm install
+```
+
+### 3. Create .env file with the following:
+```
+PORT=
+MONGO_URI=
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+```
+
+### 4. Start server
+```
+npm run dev
+```
+
+### 5. 🌐 Frontend (Next.js)
+
+### 1. Navigate to frontend folder
+```
+cd frontend
+```
+
+### 2. Install dependencies
+```
+npm install
+```
+
+### 3. Start dev server
+```
+npm run dev
+```
