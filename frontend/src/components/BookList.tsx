@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import BookCard, { Book } from "./BookCard";
 import { API_BASE } from "@/lib/api";
+import { toast } from "sonner";
 
 interface BookListProps {
   role: "Owner" | "Seeker";
@@ -16,34 +17,36 @@ export default function BookList({ role }: BookListProps) {
     try {
       const res = await fetch(`${API_BASE}/api/books`);
       const data = await res.json();
-      console.log(data);
       setBooks(data);
     } catch (err) {
       console.error("Failed to fetch books", err);
+      toast.error("Failed to fetch books");
     }
   };
 
   const handleDelete = async (id: number) => {
     try {
-      //console.log(id);
       await fetch(`${API_BASE}/api/books/${id}`, {
         method: "DELETE",
       });
+      toast.success("Book deleted successfully");
       fetchBooks();
     } catch (err) {
       console.error("Failed to delete", err);
+      toast.error("Failed to delete book");
     }
   };
 
   const handleToggleStatus = async (id: number) => {
     try {
-      //console.log(id);
       await fetch(`${API_BASE}/api/books/${id}/status`, {
         method: "PUT",
       });
+      toast.success("Book status updated");
       fetchBooks();
     } catch (err) {
       console.error("Failed to update status", err);
+      toast.error("Failed to update status");
     }
   };
 

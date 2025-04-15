@@ -3,9 +3,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { API_BASE } from "@/lib/api";
+import { toast } from "sonner";
 
 export default function BookForm({ ownerId }: { ownerId: number }) {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     title: "",
     author: "",
@@ -13,7 +15,6 @@ export default function BookForm({ ownerId }: { ownerId: number }) {
     location: "",
     contact: "",
   });
-  const [message, setMessage] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -21,27 +22,35 @@ export default function BookForm({ ownerId }: { ownerId: number }) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
 
-    const res = await fetch(`${API_BASE}/api/books`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, ownerId }),
-    });
+    try {
+      const res = await fetch(`${API_BASE}/api/books`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, ownerId }),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (res.ok) {
-      setMessage("Book listed successfully!");
-      setTimeout(() => router.push("/dashboard/admin"), 1500);
-    } else {
-      setMessage(data.message || "Failed to list book");
+      if (res.ok) {
+        toast.success("Book listed successfully!");
+        setTimeout(() => router.push("/dashboard/admin"), 1200);
+      } else {
+        toast.error(data.message || "Failed to list book");
+      }
+    } catch (err) {
+      console.error("Failed to list book", err);
+      toast.error("Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="bg-white border border-orange-300 rounded p-6 max-w-lg mx-auto">
+    <div className="bg-white border border-orange-300 rounded-xl p-6 max-w-lg mx-auto shadow-md">
       <h2 className="text-2xl font-bold text-orange-700 mb-4">
-        Add a New Book
+        📘 Add a New Book
       </h2>
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <input
@@ -50,7 +59,7 @@ export default function BookForm({ ownerId }: { ownerId: number }) {
           value={form.title}
           onChange={handleChange}
           required
-          className="border p-2 rounded"
+          className="border border-orange-200 p-2 rounded focus:outline-none focus:ring-2 focus:ring-orange-400"
         />
         <input
           name="author"
@@ -58,14 +67,14 @@ export default function BookForm({ ownerId }: { ownerId: number }) {
           value={form.author}
           onChange={handleChange}
           required
-          className="border p-2 rounded"
+          className="border border-orange-200 p-2 rounded focus:outline-none focus:ring-2 focus:ring-orange-400"
         />
         <input
           name="genre"
-          placeholder="Genre"
+          placeholder="Genre (optional)"
           value={form.genre}
           onChange={handleChange}
-          className="border p-2 rounded"
+          className="border border-orange-200 p-2 rounded focus:outline-none focus:ring-2 focus:ring-orange-400"
         />
         <input
           name="location"
@@ -73,7 +82,7 @@ export default function BookForm({ ownerId }: { ownerId: number }) {
           value={form.location}
           onChange={handleChange}
           required
-          className="border p-2 rounded"
+          className="border border-orange-200 p-2 rounded focus:outline-none focus:ring-2 focus:ring-orange-400"
         />
         <input
           name="contact"
@@ -81,16 +90,20 @@ export default function BookForm({ ownerId }: { ownerId: number }) {
           value={form.contact}
           onChange={handleChange}
           required
-          className="border p-2 rounded"
+          className="border border-orange-200 p-2 rounded focus:outline-none focus:ring-2 focus:ring-orange-400"
         />
         <button
           type="submit"
-          className="bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600"
+          className={`py-2 px-4 rounded text-white font-semibold transition ${
+            loading
+              ? "bg-orange-300 cursor-not-allowed"
+              : "bg-orange-500 hover:bg-orange-600"
+          }`}
+          disabled={loading}
         >
-          Add Book
+          {loading ? "Submitting..." : "Add Book"}
         </button>
       </form>
-      {message && <p className="mt-2 text-green-600">{message}</p>}
     </div>
   );
 }

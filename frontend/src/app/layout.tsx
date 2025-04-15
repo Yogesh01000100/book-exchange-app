@@ -15,7 +15,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className="bg-orange-50 text-gray-900 min-h-screen font-sans">
         <AuthProvider>
           <NavBar />
-          <Toaster richColors closeButton expand={true} position="top-right" />
+          <Toaster richColors closeButton expand={true} position="top-center" />
           <main>{children}</main>
         </AuthProvider>
       </body>
