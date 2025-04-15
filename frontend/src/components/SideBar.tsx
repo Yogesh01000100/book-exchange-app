@@ -35,13 +35,22 @@ export default function Sidebar({ role }: SidebarProps) {
               >
                 ➕ Add New Listing
               </Link>
+              <Link
+                href="/dashboard/user/profile"
+                className="hover:text-orange-600"
+              >
+                👤 My Profile
+              </Link>
             </>
           ) : (
             <>
               <Link href="/dashboard/user" className="hover:text-orange-600">
                 🔍 Browse Listings
               </Link>
-              <Link href="/profile" className="hover:text-orange-600">
+              <Link
+                href="/dashboard/user/profile"
+                className="hover:text-orange-600"
+              >
                 👤 My Profile
               </Link>
             </>
